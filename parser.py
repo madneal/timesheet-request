@@ -34,7 +34,8 @@ def parse():
                         name: station['stat_id']
                     }
                     # name_obj[name] = station['stat_id']
-                    result.append(name_obj)
+                    if name != last_name:
+                        result.append(name_obj)
                     last_name = name
     with open('key.json', 'w', encoding='utf8') as f:
         json.dump(result, f, ensure_ascii=False)
