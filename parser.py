@@ -1,7 +1,9 @@
 import json
 
 filename = 'timesheet.json'
+filename1 = 'timesheet1.json'
 result = []
+result1 = []
 key_arr = ['stat_id', 'station_code', 'first_time', 'first_time_desc', 'last_time', 'last_time_desc', 'direction', 'description']
 # stat_id = 'stat_id'
 # station_code = 'station_code'
@@ -11,6 +13,7 @@ key_arr = ['stat_id', 'station_code', 'first_time', 'first_time_desc', 'last_tim
 # last_time_desc = 'last_time_desc'
 # direction = 'direction'
 # description = 'description'
+
 
 def parse():
     with open(filename, 'r', encoding='utf8') as arr:
@@ -22,6 +25,10 @@ def parse():
             last_name = None
             for station in line:
                 name = station['name']
+                if station['last_time_desc']:
+                    station['weekday'] = json.loads(station['last_time_desc'])['weekday']
+                    station.pop('last_time_desc', None)
+                result1.append(station)
                 if last_name is None or name is not last_name:
                     name_obj = {
                         name: station['stat_id']
@@ -31,6 +38,8 @@ def parse():
                     last_name = name
     with open('key.json', 'w', encoding='utf8') as f:
         json.dump(result, f, ensure_ascii=False)
+    with open(filename1, 'w', encoding='utf8') as f:
+        json.dump(result1, f, ensure_ascii=False)
 
 
 if __name__ == '__main__':
