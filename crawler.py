@@ -1,11 +1,14 @@
 import requests
 import json
-import time
 
 base_url = 'http://m.shmetro.com/interface/metromap/metromap.aspx?func=fltime&line='
+station_info_url = 'http://m.shmetro.com/interface/metromap/metromap.aspx?func=stationInfo&stat_id=0111'
+station_timesheet_url = 'http://m.shmetro.com/interface/metromap/metromap.aspx?func=fltime&stat_id=111'
+
 line_num_arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17]
 result = []
 filename = 'timesheet.json'
+station_file = 'station.json'
 
 def crawler():
     for line_num in line_num_arr:
