@@ -3,7 +3,7 @@ import json
 
 base_url = 'http://m.shmetro.com/interface/metromap/metromap.aspx?func=fltime&line='
 station_info_url = 'http://m.shmetro.com/interface/metromap/metromap.aspx?func=stationInfo&stat_id='
-station_timesheet_url = 'http://m.shmetro.com/interface/metromap/metromap.aspx?func=fltime&stat_id=111'
+station_timesheet_url = 'http://m.shmetro.com/interface/metromap/metromap.aspx?func=fltime&stat_id='
 
 line_num_arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 17]
 filename = 'timesheet.json'
@@ -22,15 +22,33 @@ def write_json(filename, data):
 
 
 def carwler_station_info():
-    keys = read_json('key.json')
+    # keys = read_json('key.json')
+    json_str = '[{"华夏中路":"1622"},{"周浦东":"1624"},{"鹤沙航城":"1625"},{"航头东":"1626"},{"新场":"1627"},{"野生动物园":"1628"},{"惠南":"1629"},{"惠南东":"1630"},{"书院":"1631"},{"临港大道":"1632"},{"滴水湖":"1633"}]'
+    keys = json.loads(json_str, encoding='utf8')
     result = []
     for key in keys:
         station_name = list(key.keys())[0]
         station_id = key[station_name]
-        url = station_info_url + station_id
+        # url = station_info_url + station_id
+        url = station_timesheet_url + station_id
         station_info = make_request(url)
         result = result + station_info
-    write_json('stationInfo.json', result)
+    write_json('timesheet_append.json', result)
+
+
+def format_timesheet():
+    # timesheets = read_json('timesheet_append.json')
+    station_infos = read_json('stationinfo_append.json')
+    data = {}
+    # for timesheet in timesheets:
+    for station_info in station_infos:
+        # stat_id = timesheet['stat_id']
+        stat_id = station_info['stat_id']
+        if not stat_id in data:
+            data[stat_id] = [station_info]
+        else:
+            data[stat_id].append(station_info)
+    write_json('stationInfo_append1.json', data)
 
 
 def crawler():
@@ -89,5 +107,7 @@ def add_stat_id():
 if __name__ == '__main__':
     # crawler()
     # carwler_station_info()
-    # format_station_info()
-    add_stat_id()
+    format_station_info()
+    # add_stat_id()
+    # carwler_station_info()
+    # format_timesheet()
