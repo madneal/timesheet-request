@@ -49,20 +49,16 @@ def make_request(url):
 
 
 def format_station_info():
-    timesheet = read_json('timesheet1.json')
-    data = []
-    result = {}
-    for arr in timesheet:
-        data = data + arr
-    print(data)
-    for ele in data:
-        name = ele['name']
-        if not name in result.keys():
-            result[name] = [ele]
-        else:
-            result[name].append(ele)
-    print(result)
-    print(timesheet)
+    timesheets = read_json('timesheet1.json')
+    station_info = read_json('stationInfo.json')
+    data = {}
+    for station_name in timesheets:
+        timesheet = timesheets[station_name]
+        stat_id = timesheet[0]['stat_id']
+        data[stat_id] = timesheet
+    write_json('timesheet2.json', data)
+
+
 
 
 if __name__ == '__main__':
