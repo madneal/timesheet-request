@@ -10,6 +10,7 @@ result = []
 filename = 'timesheet.json'
 station_file = 'station.json'
 
+
 def crawler():
     for line_num in line_num_arr:
         print('request for line ' + str(line_num))
