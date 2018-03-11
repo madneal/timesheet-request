@@ -65,9 +65,29 @@ def format_station_info():
     write_json('stationInfo2.json', data)
 
 
+def find_value_vy_key(arr, key):
+    for ele in arr:
+        if key.strip() == list(ele.keys())[0]:
+            return ele[key.strip()]
+    return None
 
+
+def add_stat_id():
+    keys = read_json('key.json')
+    stations = read_json('stations.json')
+    data = []
+    for station in stations:
+        station_name = station['id']
+        stat_id = find_value_vy_key(keys, station_name)
+        if stat_id is not None:
+            station['statid'] = stat_id
+        else:
+            print('has not find stat_id for ' + station_name)
+        data.append(station)
+    write_json('stations.json', data)
 
 if __name__ == '__main__':
     # crawler()
     # carwler_station_info()
-    format_station_info()
+    # format_station_info()
+    add_stat_id()
